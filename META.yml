@@ -1,0 +1,25 @@
+---
+abstract: 'Blah blah blah'
+author:
+  - 'Scott Kiehn E<lt>sk.keenlinks@gmail.comE<gt>'
+build_requires:
+  Test::More: '0.98'
+configure_requires:
+  Module::Build::Tiny: '0.039'
+dynamic_config: 0
+generated_by: 'App::ModuleBuildTiny version 0.010, CPAN::Meta::Converter version 2.150001'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: Mojolicious-Plugin-LocalMoment
+provides:
+  Mojolicious::Plugin::LocalMoment:
+    file: lib/Mojolicious/Plugin/LocalMoment.pm
+    version: '0.01'
+requires:
+  Mojolicious: '6.20'
+  Time::Local: '1.2300'
+  Time::Moment: '0.29'
+  perl: '5.008001'
+version: '0.01'
