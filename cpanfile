@@ -1,7 +1,7 @@
 requires 'perl', '5.008001';
 requires 'Mojolicious', '6.20';
-requires 'Time::Moment', '0.29';
-requires 'Time::Local', '1.2300';
+requires 'Time::Moment', '0.38';
+requires 'Time::timegm', '0.01';
 
 on 'configure' => sub {
     requires 'Module::Build::Tiny', '0.039';

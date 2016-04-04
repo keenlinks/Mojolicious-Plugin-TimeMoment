@@ -2,7 +2,7 @@ package Mojolicious::Plugin::LocalMoment;
 
 use Mojo::Base 'Mojolicious::Plugin';
 use Time::Moment;
-use Time::Local ('timegm_nocheck');
+use Time::timegm ('timegm');
 
 our $VERSION = '0.02';
 
@@ -14,7 +14,7 @@ sub register {
 		if ( $_[1] =~ m/T/ ) {
 			return Time::Moment->from_string( $_[1] );
 		} else {
-			Time::Moment->from_epoch( $_[1] )->with_offset_same_instant( int( ( timegm_nocheck( localtime( $_[1] ) ) - $_[1] ) / 60 ) );
+			Time::Moment->from_epoch( $_[1] )->with_offset_same_instant( int( ( timegm( localtime( $_[1] ) ) - $_[1] ) / 60 ) );
 		}
 	});
 

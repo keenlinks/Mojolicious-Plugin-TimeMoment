@@ -19,7 +19,7 @@ provides:
     version: '0.02'
 requires:
   Mojolicious: '6.20'
-  Time::Local: '1.2300'
-  Time::Moment: '0.29'
+  Time::Moment: '0.38'
+  Time::timegm: '0.01'
   perl: '5.008001'
 version: '0.02'
