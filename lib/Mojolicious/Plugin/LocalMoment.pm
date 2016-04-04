@@ -4,7 +4,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Time::Moment;
 use Time::Local ('timegm_nocheck');
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub register {
 	my ( $self, $app, $conf ) = @_;
@@ -14,13 +14,11 @@ sub register {
 		if ( $_[1] =~ m/T/ ) {
 			return Time::Moment->from_string( $_[1] );
 		} else {
-			my @t = localtime( $_[1] );
-			my $offset = int( ( timegm_nocheck( @t[0..4], ( $t[5] > -901 ? $t[5] + 1900 : $t[5] ) ) - $_[1] ) / 60 );
-			return Time::Moment->from_epoch( $_[1] )->with_offset_same_instant( $offset );
+			Time::Moment->from_epoch( $_[1] )->with_offset_same_instant( int( ( timegm_nocheck( localtime( $_[1] ) ) - $_[1] ) / 60 ) );
 		}
 	});
 
-	# Template helpers: Not instance methods, but class methods that use the above constructor helper.
+	# Date format helpers (not instance methods)
 	if ( keys %$conf ) {
 		for my $helper ( keys %$conf ) {
 			$app->helper( $helper => sub {

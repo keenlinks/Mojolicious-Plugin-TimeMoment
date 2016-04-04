@@ -2,3 +2,6 @@ Revision history for Perl module Mojolicious-Plugin-LocalMoment
 
 0.01 2015-09-21
   - Initial release
+
+0.02 2016-04-04
+  - Revised object creation method

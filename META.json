@@ -4,7 +4,7 @@
       "Scott Kiehn E<lt>sk.keenlinks@gmail.comE<gt>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "App::ModuleBuildTiny version 0.010",
+   "generated_by" : "App::ModuleBuildTiny version 0.011",
    "license" : [
       "perl_5"
    ],
@@ -21,7 +21,7 @@
       },
       "develop" : {
          "requires" : {
-            "App::ModuleBuildTiny" : "0.010"
+            "App::ModuleBuildTiny" : "0.011"
          }
       },
       "runtime" : {
@@ -41,9 +41,9 @@
    "provides" : {
       "Mojolicious::Plugin::LocalMoment" : {
          "file" : "lib/Mojolicious/Plugin/LocalMoment.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       }
    },
    "release_status" : "stable",
-   "version" : "0.01"
+   "version" : "0.02"
 }
