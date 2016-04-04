@@ -41,9 +41,9 @@
    "provides" : {
       "Mojolicious::Plugin::LocalMoment" : {
          "file" : "lib/Mojolicious/Plugin/LocalMoment.pm",
-         "version" : "0.02"
+         "version" : "0.03"
       }
    },
    "release_status" : "stable",
-   "version" : "0.02"
+   "version" : "0.03"
 }

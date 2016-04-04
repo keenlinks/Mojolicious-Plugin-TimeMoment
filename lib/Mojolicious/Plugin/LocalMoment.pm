@@ -4,7 +4,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Time::Moment;
 use Time::timegm ('timegm');
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub register {
 	my ( $self, $app, $conf ) = @_;

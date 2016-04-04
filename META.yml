@@ -16,10 +16,10 @@ name: Mojolicious-Plugin-LocalMoment
 provides:
   Mojolicious::Plugin::LocalMoment:
     file: lib/Mojolicious/Plugin/LocalMoment.pm
-    version: '0.02'
+    version: '0.03'
 requires:
   Mojolicious: '6.20'
   Time::Moment: '0.38'
   Time::timegm: '0.01'
   perl: '5.008001'
-version: '0.02'
+version: '0.03'
