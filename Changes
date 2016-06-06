@@ -8,3 +8,10 @@ Revision history for Perl module Mojolicious-Plugin-LocalMoment
 
 0.03 2016-04-04
   - Replaced Time::Local with Time::timegm and adjusted Time::Moment version
+
+0.04 2016-06-16
+  - Added a monkey_patch constructor to Time::Moment
+  - Replaced Time::timegm with Time::y2038
+  - Added to existing test
+  - Added test to check new constructor against DateTime (if installed)
+  - Pushed version

@@ -2,28 +2,30 @@ package Mojolicious::Plugin::LocalMoment;
 
 use Mojo::Base 'Mojolicious::Plugin';
 use Time::Moment;
-use Time::timegm ('timegm');
+use Time::y2038 ();
+use Mojo::Util ('monkey_patch');
 
-our $VERSION = '0.03';
+monkey_patch 'Time::Moment', from_epoch_local => sub {
+	$_[0]->from_epoch( $_[1] )->with_offset_same_instant( int( ( Time::y2038::timegm( Time::y2038::localtime( $_[1] ) ) - $_[1] ) / 60 ) );
+};
+
+our $VERSION = '0.04';
 
 sub register {
 	my ( $self, $app, $conf ) = @_;
 
 	$app->helper( tm => sub {
 		return Time::Moment->now unless $_[1];
-		if ( $_[1] =~ m/T/ ) {
-			return Time::Moment->from_string( $_[1] );
-		} else {
-			Time::Moment->from_epoch( $_[1] )->with_offset_same_instant( int( ( timegm( localtime( $_[1] ) ) - $_[1] ) / 60 ) );
-		}
+		return Time::Moment->from_object( $_[1] ) if ref( $_[1] ) eq 'Time::Moment';
+		return Time::Moment->from_string( $_[1] ) if $_[1] =~ m/T/;
+		Time::Moment->from_epoch_local( $_[1] );
 	});
 
-	# Date format helpers (not instance methods)
+	# If formats provided, format names become instance functions and template helpers using Time::Moment's strftime function.
 	if ( keys %$conf ) {
 		for my $helper ( keys %$conf ) {
-			$app->helper( $helper => sub {
-				$_[0]->tm( $_[1] )->strftime( $conf->{$helper} );
-			});
+			monkey_patch 'Time::Moment', $helper => sub { $_[0]->strftime( $conf->{$helper} ) };
+			$app->helper( $helper => sub { $_[0]->tm( $_[1] )->$helper });
 		}
 	}
 }
