@@ -6,8 +6,8 @@ use Test::Mojo;
 use Time::Moment;
 
 plugin 'Mojolicious::Plugin::TimeMoment' => {
-	dt_mdy => '%D, %l:%M %p',
-	basic_date => '%B %e, %Y',
+	dt_mdy => '%D, %-l:%M %p',
+	basic_date => '%B %-e, %Y',
 };
 
 my $t = Test::Mojo->new;
@@ -44,7 +44,7 @@ ok( $time == $c->tm( $time )->epoch );
 # Test instance functions and helpers.
 
 # Format 1
-my $dt_mdy_rex = qr/^\d{2}\/\d{2}\/\d{2},{1} {1,2}\d{1,2}:\d{2} {1}(A|P)M$/;
+my $dt_mdy_rex = qr/^\d{2}\/\d{2}\/\d{2}, \d{1,2}:\d{2} {1}(A|P)M$/;
 
 # Uses Time::Moment->now
 like( $c->tm->dt_mdy, $dt_mdy_rex );
@@ -69,7 +69,7 @@ like( $c->dt_mdy( $tm ), $dt_mdy_rex );
 
 
 # Format 2
-my $basic_date_rex = qr/^[JFMASOND]{1}[a-z]{2,8} {1,2}\d{1,2},{1} {1}\d{4}$/;
+my $basic_date_rex = qr/^[JFMASOND]{1}[a-z]{2,8} \d{1,2}, \d{4}$/;
 
 like( $c->tm->basic_date, $basic_date_rex );
 like( $c->basic_date, $basic_date_rex );
