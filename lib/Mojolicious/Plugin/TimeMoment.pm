@@ -56,7 +56,7 @@ Mojolicious::Plugin::TimeMoment - Adds a Time::Moment object as a helper.
   });
 
   # Controllers: Objects created below have access to Time::Moment's instance methods
-  # and any added date format methods ($tm->dt_mdy & $tm->basic_date_time).
+  # and any custom date format methods ($tm->dt_mdy & $tm->basic_date_time).
 
   my $tm = $c->tm; # System's current time
   my $tm2 = $c->tm( 1465483062 ); # From an existing epoch and localized to the system
@@ -98,11 +98,11 @@ Registers the plugin into the Mojolicious app.
   $c->tm( $epoch );
   $c->tm( $tm );
 
-Used to create a Time::Moment object. Time::Moment has several constructors, but only a few ("now", "from_string" and "from_object") are used in this plugin. In addition, an additional constructor "then" is added so an epoch can be used to create an object which is localized to the system time (Time::Moment uses similar method to localize the "now" constructor). I like to store my dates as epoch values in the database making the "then" constructor necessary. The "to_object" constructor was included to allow a Time::Moment object created by a non-included constructor to be passed into the plugin.
+Used to create a Time::Moment object. Time::Moment has several constructors, but only a few are used in this plugin: "now", "from_string" and "from_object". In addition, an additional constructor "then" is added so an epoch can be used to create an object which is localized to the system time (Time::Moment uses a similar method to localize the "now" constructor). I like to store my dates as epoch values in the database making the "then" constructor necessary. The "to_object" constructor was included to allow a Time::Moment object created by a non-included constructor to be passed into the plugin.
 
 =head2 "custom_date_formats"
 
-The following configuration creates instance methods and helpers called "dt_mdy", "basic_date_time" and "silly_date." The helpers use the instance methods internally [ie. dt_mdy 1465483062 is actually $c->tm(1465483062)->dt_mdy].
+The following configuration creates custom instance methods and helpers called "dt_mdy", "basic_date_time" and "unconventional_date." The helpers use the instance methods internally.
 
   $app->plugin( 'time_moment' => {
     dt_mdy => '%D, %-l:%M %p',
