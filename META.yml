@@ -12,15 +12,15 @@ license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
-name: Mojolicious-Plugin-LocalMoment
+name: Mojolicious-Plugin-TimeMoment
 provides:
-  Mojolicious::Plugin::LocalMoment:
-    file: lib/Mojolicious/Plugin/LocalMoment.pm
-    version: '0.04'
+  Mojolicious::Plugin::TimeMoment:
+    file: lib/Mojolicious/Plugin/TimeMoment.pm
+    version: '0.05'
 requires:
   Mojolicious: '6.20'
   Time::Moment: '0.38'
   Time::y2038: '20100403'
   perl: '5.008001'
-version: '0.04'
+version: '0.05'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

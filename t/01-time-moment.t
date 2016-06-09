@@ -5,7 +5,7 @@ use Mojolicious::Lite;
 use Test::Mojo;
 use Time::Moment;
 
-plugin 'Mojolicious::Plugin::LocalMoment' => {
+plugin 'Mojolicious::Plugin::TimeMoment' => {
 	dt_mdy => '%D, %l:%M %p',
 	basic_date => '%B %e, %Y',
 };
@@ -27,7 +27,7 @@ my $tm = Time::Moment->new(
 # Uses Time::Moment->now
 isa_ok( $c->tm, 'Time::Moment' );
 
-# Uses Time::Moment->from_epoch_local - monkey_patched constructor
+# Uses Time::Moment->then - monkey_patched constructor
 isa_ok( $c->tm( $time ), 'Time::Moment' );
 
 # Uses Time::Moment->from_string
@@ -50,7 +50,7 @@ my $dt_mdy_rex = qr/^\d{2}\/\d{2}\/\d{2},{1} {1,2}\d{1,2}:\d{2} {1}(A|P)M$/;
 like( $c->tm->dt_mdy, $dt_mdy_rex );
 like( $c->dt_mdy, $dt_mdy_rex );
 
-# Uses Time::Moment->from_epoch_local - monkey_patched constructor
+# Uses Time::Moment->then - monkey_patched constructor
 like( $c->tm( $time )->dt_mdy, $dt_mdy_rex );
 like( $c->dt_mdy( $time ), $dt_mdy_rex );
 

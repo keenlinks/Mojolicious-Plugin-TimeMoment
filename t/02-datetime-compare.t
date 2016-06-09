@@ -10,7 +10,7 @@ my $tz = 'America/Chicago';
 $ENV{TZ} = $tz;
 POSIX::tzset();
 
-plugin 'Mojolicious::Plugin::LocalMoment';
+plugin 'Mojolicious::Plugin::TimeMoment';
 
 my $t = Test::Mojo->new;
 my $c = $t->app->build_controller;

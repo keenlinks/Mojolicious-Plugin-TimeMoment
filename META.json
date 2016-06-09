@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "Mojolicious-Plugin-LocalMoment",
+   "name" : "Mojolicious-Plugin-TimeMoment",
    "prereqs" : {
       "configure" : {
          "requires" : {
@@ -39,12 +39,12 @@
       }
    },
    "provides" : {
-      "Mojolicious::Plugin::LocalMoment" : {
-         "file" : "lib/Mojolicious/Plugin/LocalMoment.pm",
-         "version" : "0.04"
+      "Mojolicious::Plugin::TimeMoment" : {
+         "file" : "lib/Mojolicious/Plugin/TimeMoment.pm",
+         "version" : "0.05"
       }
    },
    "release_status" : "stable",
-   "version" : "0.04",
+   "version" : "0.05",
    "x_serialization_backend" : "JSON::PP version 2.27300"
 }
