@@ -1,6 +1,7 @@
 package Mojolicious::Plugin::TimeMoment;
 
 use Mojo::Base 'Mojolicious::Plugin';
+use Scalar::Util qw(looks_like_number);
 use Time::Moment;
 use Time::y2038 ();
 use Mojo::Util ('monkey_patch');
@@ -9,23 +10,24 @@ monkey_patch 'Time::Moment', then => sub {
 	$_[0]->from_epoch( $_[1] )->with_offset_same_instant( int( ( Time::y2038::timegm( Time::y2038::localtime( $_[1] ) ) - $_[1] ) / 60 ) );
 };
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 sub register {
 	my ( $self, $app, $conf ) = @_;
 
 	$app->helper( tm => sub {
-		return Time::Moment->now unless $_[1];
-		return Time::Moment->from_object( $_[1] ) if ref( $_[1] ) eq 'Time::Moment';
-		return Time::Moment->from_string( $_[1] ) if $_[1] =~ m/T/;
-		Time::Moment->then( $_[1] );
+		shift;
+		return Time::Moment->now unless $_[0];
+		return Time::Moment->then($_[0]) if looks_like_number($_[0]);
+		my $constructor = shift;
+		return Time::Moment->$constructor( @_ );
 	});
 
 	# If formats provided, format names become Time::Moment instance functions and template helpers using Time::Moment's strftime function.
 	if ( keys %$conf ) {
 		for my $helper ( keys %$conf ) {
-			monkey_patch 'Time::Moment', $helper => sub { $_[0]->strftime( $conf->{$helper} ) };
-			$app->helper( $helper => sub { $_[0]->tm( $_[1] )->$helper });
+			monkey_patch 'Time::Moment', $helper => sub { shift->strftime( $conf->{$helper} ) };
+			$app->helper( $helper => sub { shift->tm( @_ )->$helper });
 		}
 	}
 }
