@@ -1,5 +1,10 @@
 Revision history for Perl module Mojolicious-Plugin-TimeMoment
 
+0.06 2017-02-07
+  - Removed helper methods (confusing, namespace pollution)
+  - Revised object constructor api
+  - Pushed version
+
 0.05 2016-06-09
   - Renamed plugin from LocalMoment to TimeMoment
   - Renamed from_epoch_local constructor to then

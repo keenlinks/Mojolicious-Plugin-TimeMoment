@@ -1,10 +1,10 @@
 package Mojolicious::Plugin::TimeMoment;
 
 use Mojo::Base 'Mojolicious::Plugin';
-use Scalar::Util qw(looks_like_number);
+use Scalar::Util ('looks_like_number');
+use Mojo::Util ('monkey_patch');
 use Time::Moment;
 use Time::y2038 ();
-use Mojo::Util ('monkey_patch');
 
 monkey_patch 'Time::Moment', then => sub {
 	$_[0]->from_epoch( $_[1] )->with_offset_same_instant( int( ( Time::y2038::timegm( Time::y2038::localtime( $_[1] ) ) - $_[1] ) / 60 ) );
@@ -23,11 +23,10 @@ sub register {
 		return Time::Moment->$constructor( @_ );
 	});
 
-	# If formats provided, format names become Time::Moment instance functions and template helpers using Time::Moment's strftime function.
+	# If formats provided, format names become Time::Moment instance methods using Time::Moment's strftime function.
 	if ( keys %$conf ) {
-		for my $helper ( keys %$conf ) {
-			monkey_patch 'Time::Moment', $helper => sub { shift->strftime( $conf->{$helper} ) };
-			$app->helper( $helper => sub { shift->tm( @_ )->$helper });
+		for my $method ( keys %$conf ) {
+			monkey_patch 'Time::Moment', $method => sub { shift->strftime( $conf->{$method} ) };
 		}
 	}
 }
@@ -43,7 +42,7 @@ Mojolicious::Plugin::TimeMoment - Adds a Time::Moment object as a helper.
 
 =head1 VERSION
 
-0.05
+0.06
 
 =head1 SYNOPSIS
 
@@ -52,28 +51,25 @@ Mojolicious::Plugin::TimeMoment - Adds a Time::Moment object as a helper.
   $ENV{TZ} = 'America/Chicago';
   POSIX::tzset();
 
-  $app->plugin( 'time_moment' => {
+  $app->plugin( 'TimeMoment' => {
     dt_mdy => '%D, %-l:%M %p',
     basic_date_time => '%B %-e, %Y %-l:%M %p',
+    timestamp => '%a, %d %b %Y %H:%M:%S GMT',
   });
 
-  # Controllers: Objects created below have access to Time::Moment's instance methods
-  # and any custom date format methods ($tm->dt_mdy & $tm->basic_date_time).
+  # Controllers: Create Time::Moment objects.
 
-  my $tm = $c->tm; # System's current time
-  my $tm2 = $c->tm( 1465483062 ); # From an existing epoch and localized to the system
-  my $tm3 = $c->tm( '2016-06-09T09:37:42-05' );
-  my $tm4 = $c->tm( Time::Moment->new(...) );
+  my $tm1 = $c->tm;
+  my $tm2 = $c->tm( 1465483062 );
+  my $tm3 = $c->tm( 'from_string', '2016-06-09T09:37:42-05' );
 
+  # Templates: Use created objects, or use the helper.
 
-  # Templates:
-
-  <%= $tm->basic_date_time %>
-
-  # Or use the helper
-
-  <%= basic_date_time 1465483062 %>
-
+  %= $tm1->timestamp
+  %= $tm2->month
+  %= $tm3->year
+  %= tm->basic_date_time
+  %= tm(1465483062)->dt_mdy
 
 =head1 DESCRIPTION
 
@@ -83,10 +79,11 @@ Time::Moment is a great module and fast. Mojolicious::Plugin::TimeMoment uses th
 
 =head2 register
 
-  $app->plugin( 'time_moment' );
+  $app->plugin( 'TimeMoment' );
 
-  $app->plugin( 'time_moment' => {
-    $format_name => $custom_strftime_format,
+  $app->plugin( 'TimeMoment' => {
+    $format_name1 => $custom_strftime_format1,
+    $format_name2 => $custom_strftime_format2,
   });
 
 Registers the plugin into the Mojolicious app.
@@ -96,25 +93,29 @@ Registers the plugin into the Mojolicious app.
 =head2 tm
 
   $c->tm;
-  $c->tm( $date_string );
   $c->tm( $epoch );
-  $c->tm( $tm );
+  $c->tm( $time_moment_constructor, $param );
 
-Used to create a Time::Moment object. Time::Moment has several constructors, but only a few are used in this plugin: "now", "from_string" and "from_object". In addition, an additional constructor "then" is added so an epoch can be used to create an object which is localized to the system time (Time::Moment uses a similar method to localize the "now" constructor). I like to store my dates as epoch values in the database making the "then" constructor necessary. The "to_object" constructor was included to allow a Time::Moment object created by a non-included constructor to be passed into the plugin.
+Used to create a Time::Moment object. Time::Moment has several constructors. Used without any parameters, the localized "now" constructor creates the object. Pass in an epoch, the localized "then" constructor is used (this is a new constructor added to Time::Moment). Any of the other documented Time::Moment constructors can be used by passing the constructor name in as the first parameter.
 
 =head2 "custom_date_formats"
 
-The following configuration creates custom instance methods and helpers called "dt_mdy", "basic_date_time" and "unconventional_date." The helpers use the instance methods internally.
+The following configuration creates custom instance methods.
 
-  $app->plugin( 'time_moment' => {
+  $app->plugin( 'TimeMoment' => {
     dt_mdy => '%D, %-l:%M %p',
     basic_date_time => '%B %-e, %Y %-l:%M %p',
     unconventional_date => 'This is a %A in %B, to be more precise %d/%m of %Y.',
   });
 
-  <%= dt_mdy 1465483062 %> is "06/09/16, 9:37 AM"
-  <%= basic_date_time 1465483062 %> is "June 9, 2016 9:37 AM"
-  <%= unconventional_date 1465483062 %> is "This is a Thursday in June, to be more precise 09/06 of 2016."
+  % my $tm = $c->tm( 1465483062 );
+  <%= $tm->dt_mdy %> is "06/09/16, 9:37 AM"
+  <%= $tm->basic_date_time %> is "June 9, 2016 9:37 AM"
+  <%= $tm->unconventional_date %> is "This is a Thursday in June, to be more precise 09/06 of 2016."
+
+  <%= tm( 1465483062 )->dt_mdy %> is "06/09/16, 9:37 AM"
+  <%= tm( 1465483062 )->basic_date_time %> is "June 9, 2016 9:37 AM"
+  <%= tm( 1465483062 )->unconventional_date %> is "This is a Thursday in June, to be more precise 09/06 of 2016."
 
 =head1 SOURCE REPOSITORY
 

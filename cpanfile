@@ -1,6 +1,7 @@
 requires 'perl', '5.008001';
 requires 'Mojolicious', '6.20';
-requires 'Time::Moment', '0.38';
+requires 'Scalar::Util', => '0';
+requires 'Time::Moment', '0.41';
 requires 'Time::y2038', '20100403';
 
 on 'configure' => sub {
@@ -8,5 +9,5 @@ on 'configure' => sub {
 };
 
 on 'test' => sub {
-    requires 'Test::More', '0.98';
+    requires 'Test::More', '1.302075';
 };

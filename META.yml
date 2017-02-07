@@ -1,13 +1,13 @@
 ---
-abstract: 'Blah blah blah'
+abstract: 'Adds a Time::Moment object as a helper.'
 author:
   - 'Scott Kiehn E<lt>sk.keenlinks@gmail.comE<gt>'
 build_requires:
-  Test::More: '0.98'
+  Test::More: '1.302075'
 configure_requires:
   Module::Build::Tiny: '0.039'
 dynamic_config: 0
-generated_by: 'App::ModuleBuildTiny version 0.013, CPAN::Meta::Converter version 2.150005'
+generated_by: 'App::ModuleBuildTiny version 0.014, CPAN::Meta::Converter version 2.150005'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,11 +16,12 @@ name: Mojolicious-Plugin-TimeMoment
 provides:
   Mojolicious::Plugin::TimeMoment:
     file: lib/Mojolicious/Plugin/TimeMoment.pm
-    version: '0.05'
+    version: '0.06'
 requires:
   Mojolicious: '6.20'
-  Time::Moment: '0.38'
+  Scalar::Util: '0'
+  Time::Moment: '0.41'
   Time::y2038: '20100403'
   perl: '5.008001'
-version: '0.05'
+version: '0.06'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
