@@ -1,0 +1,134 @@
+NAME
+
+    Mojolicious::Plugin::TimeMoment - Adds a Time::Moment object as a
+    helper.
+
+VERSION
+
+    1.00
+
+SYNOPSIS
+
+      # Mojolicious:
+    
+      $ENV{TZ} = 'America/Chicago';
+      POSIX::tzset();
+    
+      $app->plugin( 'TimeMoment' => {
+        dt_mdy => '%D, %-l:%M %p',
+        basic_date_time => '%B %-e, %Y %-l:%M %p',
+        timestamp => '%a, %d %b %Y %H:%M:%S GMT',
+      });
+    
+      # Controllers: Create Time::Moment objects.
+    
+      my $tm1 = $c->tm;
+      my $tm2 = $c->tm( 1465483062 );
+      my $tm3 = $c->tm( 'from_string', '2016-06-09T09:37:42-05' );
+    
+      # Templates: Use created objects, or use the helper.
+    
+      %= $tm1->timestamp
+      %= $tm2->month
+      %= $tm3->year
+      %= tm->basic_date_time
+      %= tm(1465483062)->dt_mdy
+
+DESCRIPTION
+
+    Time::Moment is a great module and fast.
+    Mojolicious::Plugin::TimeMoment uses this module as a plugin.
+
+METHODS
+
+ register
+
+      $app->plugin( 'TimeMoment' );
+    
+      $app->plugin( 'TimeMoment' => {
+        $format_name1 => $custom_strftime_format1,
+        $format_name2 => $custom_strftime_format2,
+      });
+
+    Registers the plugin into the Mojolicious app.
+
+HELPERS
+
+ tm
+
+      $c->tm;
+      $c->tm( $epoch );
+      $c->tm( $time_moment_constructor, $param );
+
+    Used to create a Time::Moment object. Time::Moment has several
+    constructors. Used without any parameters, the localized "now"
+    constructor creates the object. Pass in an epoch, the "then"
+    constructor is used (this is a new constructor added to Time::Moment
+    with the offset set to the system's time zone offset from UTC). Any of
+    the other documented Time::Moment constructors can be used by passing
+    the constructor name in as the first parameter.
+
+ "custom_date_formats"
+
+    The following configuration creates custom instance methods.
+
+      $app->plugin( 'TimeMoment' => {
+        dt_mdy => '%D, %-l:%M %p',
+        basic_date_time => '%B %-e, %Y %-l:%M %p',
+        unconventional_date => 'This is a %A in %B, to be more precise %d/%m of %Y.',
+      });
+    
+      % my $tm = $c->tm( 1465483062 );
+      <%= $tm->dt_mdy %> is "06/09/16, 9:37 AM"
+      <%= $tm->basic_date_time %> is "June 9, 2016 9:37 AM"
+      <%= $tm->unconventional_date %> is "This is a Thursday in June, to be more precise 09/06 of 2016."
+    
+      <%= tm( 1465483062 )->dt_mdy %> is "06/09/16, 9:37 AM"
+      <%= tm( 1465483062 )->basic_date_time %> is "June 9, 2016 9:37 AM"
+      <%= tm( 1465483062 )->unconventional_date %> is "This is a Thursday in June, to be more precise 09/06 of 2016."
+
+ ADDITIONS TO TIME::MOMENT CONSTRUCTORS
+
+ then
+
+        $tm = Time::Moment->then(1234567890);
+
+    Constructs an instance of Time::Moment that is set to the epoch input
+    in the system time zone, with the offset set to the system's time zone
+    offset from UTC.
+
+ ADDITIONS TO TIME::MOMENT INSTANCE METHODS
+
+ at_end_of_day
+
+        $tm2 = $tm1->at_end_of_day;
+
+    Returns a copy of this instance with the time of day set to the very
+    end of the day (T23:59:59). This method is equivalent to:
+
+        $tm2 = $tm1->with_hour(23)
+                   ->with_minute(59)
+                   ->with_second(59)
+                   ->with_nanosecond(999999999);
+
+SOURCE REPOSITORY
+
+    http://github.com/keenlinks/Mojolicious-Plugin-TimeMoment
+
+AUTHOR
+
+    Scott Kiehn <sk.keenlinks@gmail.com>
+
+COPYRIGHT
+
+    Copyright 2016 - Scott Kiehn
+
+LICENSE
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
+SEE ALSO
+
+    Time::Moment
+

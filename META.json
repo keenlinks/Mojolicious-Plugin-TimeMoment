@@ -1,10 +1,10 @@
 {
    "abstract" : "Adds a Time::Moment object as a helper.",
    "author" : [
-      "Scott Kiehn E<lt>sk.keenlinks@gmail.comE<gt>"
+      "Scott Kiehn <sk.keenlinks@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "App::ModuleBuildTiny version 0.014",
+   "generated_by" : "App::ModuleBuildTiny version 0.047",
    "license" : [
       "perl_5"
    ],
@@ -21,14 +21,14 @@
       },
       "develop" : {
          "requires" : {
-            "App::ModuleBuildTiny" : "0.014"
+            "App::ModuleBuildTiny" : "0.047"
          }
       },
       "runtime" : {
          "requires" : {
             "Mojolicious" : "6.20",
             "Scalar::Util" : "0",
-            "Time::Moment" : "0.41",
+            "Time::Moment" : "0.44",
             "Time::y2038" : "20100403",
             "perl" : "5.008001"
          }
@@ -42,10 +42,11 @@
    "provides" : {
       "Mojolicious::Plugin::TimeMoment" : {
          "file" : "lib/Mojolicious/Plugin/TimeMoment.pm",
-         "version" : "0.06"
+         "version" : "1.00"
       }
    },
    "release_status" : "stable",
-   "version" : "0.06",
-   "x_serialization_backend" : "JSON::PP version 2.27300"
+   "version" : "1.00",
+   "x_serialization_backend" : "JSON::PP version 4.07",
+   "x_spdx_expression" : "Artistic-1.0-Perl OR GPL-1.0-or-later"
 }
