@@ -14,7 +14,7 @@ monkey_patch 'Time::Moment', at_end_of_day => sub {
   $_[0]->with_hour( 23 )->with_minute( 59 )->with_second( 59 )->with_nanosecond( 999999999 );
 };
 
-our $VERSION = '1.00';
+our $VERSION = '0.08';
 
 sub register {
   my ( $self, $app, $conf ) = @_;
@@ -23,8 +23,10 @@ sub register {
     shift;
     return Time::Moment->now unless $_[0];
     return Time::Moment->then($_[0]) if looks_like_number($_[0]);
-    my $constructor = shift;
-    return Time::Moment->$constructor( @_ );
+  });
+
+  $app->helper( tmc => sub {
+    return 'Time::Moment';
   });
 
   # If formats provided, format names become Time::Moment instance methods using Time::Moment's strftime function.
@@ -46,7 +48,7 @@ Mojolicious::Plugin::TimeMoment - Adds a Time::Moment object as a helper.
 
 =head1 VERSION
 
-1.00
+0.08
 
 =head1 SYNOPSIS
 
@@ -65,7 +67,7 @@ Mojolicious::Plugin::TimeMoment - Adds a Time::Moment object as a helper.
 
   my $tm1 = $c->tm;
   my $tm2 = $c->tm( 1465483062 );
-  my $tm3 = $c->tm( 'from_string', '2016-06-09T09:37:42-05' );
+  my $tm3 = $c->tmc->from_string( '2016-06-09T09:37:42-05' );
 
   # Templates: Use created objects, or use the helper.
 
@@ -96,11 +98,17 @@ Registers the plugin into the Mojolicious app.
 
 =head2 tm
 
-  $c->tm;
-  $c->tm( $epoch );
-  $c->tm( $time_moment_constructor, $param );
+  $c->tm;           # TimeMoment->now
+  $c->tm( $epoch ); # TimeMoment->then( $epoch )
 
-Used to create a Time::Moment object. Time::Moment has several constructors. Used without any parameters, the localized "now" constructor creates the object. Pass in an epoch, the "then" constructor is used (this is a new constructor added to Time::Moment with the offset set to the system's time zone offset from UTC). Any of the other documented Time::Moment constructors can be used by passing the constructor name in as the first parameter.
+Used to create a Time::Moment object. Time::Moment has several constructors. Used without any parameters, the localized "now" constructor creates the object. Pass in an epoch, the "then" constructor is used (this is a new constructor added to Time::Moment with the offset set to the system's time zone offset from UTC).
+
+=head2 tmc
+
+  $c->tmc->now_utc;
+  $c->tmc->from_string( $string );
+
+Use any of the Time::Moment constructors.
 
 =head2 "custom_date_formats"
 

@@ -1,9 +1,12 @@
 Revision history for Perl module Mojolicious-Plugin-TimeMoment
 
-1.00 2025-02-11
+0.08 2025-02-12
+  - Added new helper "tmc" to create TimeMoment objects from any constructors
+  - Revised helper "tm" to use just "now" and "then" constructors
+
+0.07 2025-02-11
   - Added a monkey_patch instance method (at_end_of_day) to Time::Moment
   - Refined documentation
-  - Pushed version to 1.00
 
 0.06 2017-02-07
   - Removed helper methods (confusing, namespace pollution)

@@ -34,26 +34,26 @@ isa_ok( $c->tm, 'Time::Moment' );
 isa_ok( $c->tm( $time ), 'Time::Moment' );
 
 # Uses Time::Moment->from_string
-isa_ok( $c->tm( 'from_string', '2015-01-01T01:01:01Z' ), 'Time::Moment' );
+isa_ok( $c->tmc->from_string( '2015-01-01T01:01:01Z' ), 'Time::Moment' );
 
 # Uses Time::Moment->from_epoch
-isa_ok( $c->tm( 'from_epoch', $time ), 'Time::Moment' );
+isa_ok( $c->tmc->from_epoch( $time ), 'Time::Moment' );
 
 # Uses Time::Moment->now_utc
-isa_ok( $c->tm( 'now_utc' ), 'Time::Moment' );
+isa_ok( $c->tmc->now_utc, 'Time::Moment' );
 
 # Uses Time::Moment->from_object
-isa_ok( $c->tm( 'from_object', $tm ), 'Time::Moment' );
+isa_ok( $c->tmc->from_object( $tm ), 'Time::Moment' );
 
 # Comparison tests
 ok( time() == $c->tm->epoch );
-ok( time() == $c->tm( 'now' )->epoch );
+ok( time() == $c->tmc->now->epoch );
 
 sleep 1;
 
 ok( $time == $c->tm( $time )->epoch );
-ok( $time == $c->tm( 'then', $time )->epoch );
-ok( $c->tm( $time )->epoch == $c->tm( 'from_epoch', $time )->epoch );
+ok( $time == $c->tmc->then( $time )->epoch );
+ok( $c->tm( $time )->epoch == $c->tmc->from_epoch( $time )->epoch );
 ok( $tm->epoch == $c->tm( $tm->epoch )->epoch );
 
 
@@ -70,12 +70,12 @@ like( $c->tm( $time )->dt_mdy, $dt_mdy_rex );
 
 # Uses Time::Moment->from_string
 for ( 1 .. 12 ) {
-	like( $c->tm( 'from_string', '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-01T01:01:01Z' )->dt_mdy, $dt_mdy_rex );
-	like( $c->tm( 'from_string', '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-10T10:10:10Z' )->dt_mdy, $dt_mdy_rex );
+	like( $c->tmc->from_string( '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-01T01:01:01Z' )->dt_mdy, $dt_mdy_rex );
+	like( $c->tmc->from_string( '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-10T10:10:10Z' )->dt_mdy, $dt_mdy_rex );
 }
 
 # Uses Time::Moment->from_object
-like( $c->tm( 'from_object', $tm )->dt_mdy, $dt_mdy_rex );
+like( $c->tmc->from_object( $tm )->dt_mdy, $dt_mdy_rex );
 
 
 # Format 2
@@ -85,10 +85,10 @@ like( $c->tm->basic_date, $basic_date_rex );
 like( $c->tm( $time )->basic_date, $basic_date_rex );
 
 for ( 1 .. 12 ) {
-	like( $c->tm( 'from_string', '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-01T01:01:01Z' )->basic_date, $basic_date_rex );
-	like( $c->tm( 'from_string', '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-10T10:10:10Z' )->basic_date, $basic_date_rex );
+	like( $c->tmc->from_string( '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-01T01:01:01Z' )->basic_date, $basic_date_rex );
+	like( $c->tmc->from_string( '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-10T10:10:10Z' )->basic_date, $basic_date_rex );
 }
 
-like( $c->tm( 'from_object', $tm )->basic_date, $basic_date_rex );
+like( $c->tmc->from_object( $tm )->basic_date, $basic_date_rex );
 
 done_testing();

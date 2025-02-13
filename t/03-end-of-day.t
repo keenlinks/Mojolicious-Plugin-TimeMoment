@@ -10,8 +10,8 @@ plugin 'Mojolicious::Plugin::TimeMoment';
 my $t = Test::Mojo->new;
 my $c = $t->app->build_controller;
 
-my $tm1 = $c->tm( 'from_string', '2025-01-01T23:59:59Z');
-my $tm2 = $c->tm( 'from_string', '2025-01-01T00:00:00Z');
+my $tm1 = $c->tmc->from_string( '2025-01-01T23:59:59Z');
+my $tm2 = $c->tmc->from_string( '2025-01-01T00:00:00Z');
 
 # Comparison tests, run through a day.
 for (0 .. 1439) {

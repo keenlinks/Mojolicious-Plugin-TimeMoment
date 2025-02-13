@@ -5,7 +5,7 @@ NAME
 
 VERSION
 
-    1.00
+    0.08
 
 SYNOPSIS
 
@@ -24,7 +24,7 @@ SYNOPSIS
     
       my $tm1 = $c->tm;
       my $tm2 = $c->tm( 1465483062 );
-      my $tm3 = $c->tm( 'from_string', '2016-06-09T09:37:42-05' );
+      my $tm3 = $c->tmc->from_string( '2016-06-09T09:37:42-05' );
     
       # Templates: Use created objects, or use the helper.
     
@@ -56,17 +56,21 @@ HELPERS
 
  tm
 
-      $c->tm;
-      $c->tm( $epoch );
-      $c->tm( $time_moment_constructor, $param );
+      $c->tm;           # TimeMoment->now
+      $c->tm( $epoch ); # TimeMoment->then( $epoch )
 
     Used to create a Time::Moment object. Time::Moment has several
     constructors. Used without any parameters, the localized "now"
     constructor creates the object. Pass in an epoch, the "then"
     constructor is used (this is a new constructor added to Time::Moment
-    with the offset set to the system's time zone offset from UTC). Any of
-    the other documented Time::Moment constructors can be used by passing
-    the constructor name in as the first parameter.
+    with the offset set to the system's time zone offset from UTC).
+
+ tmc
+
+      $c->tmc->now_utc;
+      $c->tmc->from_string( $string );
+
+    Use any of the Time::Moment constructors.
 
  "custom_date_formats"
 
