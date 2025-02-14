@@ -33,6 +33,9 @@ isa_ok( $c->tm, 'Time::Moment' );
 # Uses Time::Moment->then - monkey_patched constructor
 isa_ok( $c->tm( $time ), 'Time::Moment' );
 
+# Uses Time::Moment->dts - monkey_patched constructor
+isa_ok( $c->tm( '2015-01-01T01:01:01Z' ), 'Time::Moment' );
+
 # Uses Time::Moment->from_string
 isa_ok( $c->tmc->from_string( '2015-01-01T01:01:01Z' ), 'Time::Moment' );
 
@@ -55,7 +58,7 @@ ok( $time == $c->tm( $time )->epoch );
 ok( $time == $c->tmc->then( $time )->epoch );
 ok( $c->tm( $time )->epoch == $c->tmc->from_epoch( $time )->epoch );
 ok( $tm->epoch == $c->tm( $tm->epoch )->epoch );
-
+ok( $tm->epoch == $c->tm( $tm->to_string )->epoch );
 
 # Test instance functions and helpers.
 
@@ -67,6 +70,12 @@ like( $c->tm->dt_mdy, $dt_mdy_rex );
 
 # Uses Time::Moment->then - monkey_patched constructor
 like( $c->tm( $time )->dt_mdy, $dt_mdy_rex );
+
+# Uses Time::Moment->dts - monkey_patched constructor
+for ( 1 .. 12 ) {
+	like( $c->tm( '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-01T01:01:01Z' )->dt_mdy, $dt_mdy_rex );
+	like( $c->tm( '2015-' . ($_ < 10 ? '0' . $_ : $_) . '-10T10:10:10Z' )->dt_mdy, $dt_mdy_rex );
+}
 
 # Uses Time::Moment->from_string
 for ( 1 .. 12 ) {

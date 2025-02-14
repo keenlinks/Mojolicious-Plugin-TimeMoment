@@ -16,13 +16,13 @@ name: Mojolicious-Plugin-TimeMoment
 provides:
   Mojolicious::Plugin::TimeMoment:
     file: lib/Mojolicious/Plugin/TimeMoment.pm
-    version: '0.08'
+    version: '0.09'
 requires:
   Mojolicious: '6.20'
   Scalar::Util: '0'
   Time::Moment: '0.44'
   Time::y2038: '20100403'
   perl: '5.008001'
-version: '0.08'
+version: '0.09'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
 x_spdx_expression: 'Artistic-1.0-Perl OR GPL-1.0-or-later'

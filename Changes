@@ -1,5 +1,8 @@
 Revision history for Perl module Mojolicious-Plugin-TimeMoment
 
+0.09 2025-02-13
+  - Added a monkey_patch constructor to Time::Moment (dts)
+
 0.08 2025-02-12
   - Added new helper "tmc" to create TimeMoment objects from any constructors
   - Revised helper "tm" to use just "now" and "then" constructors
@@ -19,7 +22,7 @@ Revision history for Perl module Mojolicious-Plugin-TimeMoment
   - Pushed version
 
 0.04 2016-06-07
-  - Added a monkey_patch constructor to Time::Moment
+  - Added a monkey_patch constructor to Time::Moment (then)
   - Replaced Time::timegm with Time::y2038
   - Added to existing test
   - Added test to check new constructor against DateTime (if installed)
